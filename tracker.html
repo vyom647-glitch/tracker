@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Daily Task Completion Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+            background-color: white;
+            color: black;
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background-color: white;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+            background-color: white;
+            color: black;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        input[type="text"], input[type="number"], input[type="date"], textarea {
+            width: 100%;
+            padding: 5px;
+            box-sizing: border-box;
+            background-color: white;
+            color: black;
+            border: 1px solid #ccc;
+        }
+        .checkbox {
+            width: 20px;
+            height: 20px;
+        }
+        .section {
+            margin-bottom: 30px;
+            background-color: white;
+        }
+        .top3 {
+            list-style-type: none;
+            padding: 0;
+        }
+        .top3 li {
+            margin-bottom: 10px;
+        }
+        .review {
+            margin-bottom: 20px;
+        }
+        .weekly {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            color: black;
+            display: none; /* Hidden by default */
+        }
+        .daily {
+            display: block;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 20px;
+            margin-right: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div id="dailySection" class="daily">
+        <h1>Daily Task Completion — Tick Mark</h1>
+        <p><strong>Date:</strong> <input type="date" id="date"></p>
+
+        <div class="section">
+            <h2>Quick Instructions</h2>
+            <ul>
+                <li>Fill the <strong>Date</strong>.</li>
+                <li>Use the time column to add planned time or duration.</li>
+                <li>At the end of the day, mark habits in the Habit Tracker and calculate <strong>Completion %</strong>.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Today’s Top 3 (must-dos):</h2>
+            <ol class="top3">
+                <li><input type="text" id="top1" placeholder="Trading development, backtesting" value="Trading development, backtesting"></li>
+                <li><input type="text" id="top2" placeholder="Watch growth mindset videos and podcast" value="Watch growth mindset videos and podcast"></li>
+                <li><input type="text" id="top3" placeholder="Read 10 pages of books daily" value="Read 10 pages of books daily"></li>
+            </ol>
+        </div>
+
+        <div class="section">
+            <h2>Time-blocking / Schedule</h2>
+            <p><strong>Morning:</strong> <input type="text" id="morning" placeholder="e.g., 6-9 AM: Workout, Breakfast"></p>
+            <p><strong>Afternoon:</strong> <input type="text" id="afternoon" placeholder="e.g., 12-5 PM: Work, Meetings"></p>
+            <p><strong>Evening:</strong> <input type="text" id="evening" placeholder="e.g., 6-10 PM: Reading, Relaxation"></p>
+        </div>
+
+        <div class="section">
+            <h2>Time Invested Today</h2>
+            <ul>
+                <li><strong>Trading development:</strong> <input type="number" id="tradingTime" step="0.1" min="0"> hours</li>
+                <li><strong>Mindset growth:</strong> <input type="number" id="mindsetTime" step="0.1" min="0"> hours</li>
+                <li><strong>Reading / learning:</strong> <input type="number" id="readingTime" step="0.1" min="0"> hours</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Habit Tracker (mark ✓)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Habit</th>
+                        <th>Mon</th>
+                        <th>Tue</th>
+                        <th>Wed</th>
+                        <th>Thu</th>
+                        <th>Fri</th>
+                        <th>Sat</th>
+                        <th>Sun</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Gym / Workout</td>
+                        <td><input type="checkbox" class="checkbox" id="gymMon"></td>
+                        <td><input type="checkbox" class="checkbox" id="gymTue"></td>
+                        <td><input type="checkbox" class="checkbox" id="gymWed"></td>
+                        <td><input type="checkbox" class="checkbox" id="gymThu"></td>
+                        <td><input type="checkbox" class="checkbox" id="gymFri"></td>
+                        <td><input type="checkbox" class="checkbox" id="gymSat"></td>
+                        <td><input type="checkbox" class="checkbox" id="gymSun"></td>
+                    </tr>
+                    <tr>
+                        <td>Protein target hit</td>
+                        <td><input type="checkbox" class="checkbox" id="proteinMon"></td>
+                        <td><input type="checkbox" class="checkbox" id="proteinTue"></td>
+                        <td><input type="checkbox" class="checkbox" id="proteinWed"></td>
+                        <td><input type="checkbox" class="checkbox" id="proteinThu"></td>
+                        <td><input type="checkbox" class="checkbox" id="proteinFri"></td>
+                        <td><input type="checkbox" class="checkbox" id="proteinSat"></td>
+                        <td><input type="checkbox" class="checkbox" id="proteinSun"></td>
+                    </tr>
+                    <tr>
+                        <td>No sugar / Cheat control</td>
+                        <td><input type="checkbox" class="checkbox" id="sugarMon"></td>
+                        <td><input type="checkbox" class="checkbox" id="sugarTue"></td>
+                        <td><input type="checkbox" class="checkbox" id="sugarWed"></td>
+                        <td><input type="checkbox" class="checkbox" id="sugarThu"></td>
+                        <td><input type="checkbox" class="checkbox" id="sugarFri"></td>
+                        <td><input type="checkbox" class="checkbox" id="sugarSat"></td>
+                        <td><input type="checkbox" class="checkbox" id="sugarSun"></td>
+                    </tr>
+                    <tr>
+                        <td>Reading / Learning</td>
+                        <td><input type="checkbox" class="checkbox" id="readingMon"></td>
+                        <td><input type="checkbox" class="checkbox" id="readingTue"></td>
+                        <td><input type="checkbox" class="checkbox" id="readingWed"></td>
+                        <td><input type="checkbox" class="checkbox" id="readingThu"></td>
+                        <td><input type="checkbox" class="checkbox" id="readingFri"></td>
+                        <td><input type="checkbox" class="checkbox" id="readingSat"></td>
+                        <td><input type="checkbox" class="checkbox" id="readingSun"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>End-of-day Review</h2>
+            <p><strong>Tasks Completed:</strong> <input type="number" id="tasksCompleted" min="0" max="8"> / 8 → <strong>Completion %:</strong> <span id="completionPercent">0%</span></p>
+            <div class="review">
+                <h3>Wins (what went well):</h3>
+                <ol>
+                    <li><input type="text" id="win1" placeholder="e.g., Completed all top 3 tasks"></li>
+                    <li><input type="text" id="win2" placeholder="e.g., Hit protein target"></li>
+                </ol>
+            </div>
+            <div class="review">
+                <h3>What went wrong / Blockers:</h3>
+                <ol>
+                    <li><input type="text" id="blocker1" placeholder="e.g., Distracted by social media"></li>
+                    <li><input type="text" id="blocker2" placeholder="e.g., Missed workout due to fatigue"></li>
+                </ol>
+            </div>
+            <div class="review">
+                <h3>Tomorrow’s Focus (Top 3):</h3>
+                <ol>
+                    <li><input type="text" id="focus1" placeholder="e.g., Continue trading backtesting"></li>
+                    <li><input type="text" id="focus2" placeholder="e.g., Listen to another podcast"></li>
+                    <li><input type="text" id="focus3" placeholder="e.g., Read 10 more pages"></li>
+                </ol>
+            </div>
+        </div>
+
+        <button id="doneButton">Done (Save & Next Day)</button>
+        <button id="nextDayButton">Next Day (Without Saving)</button>
+    </div>
+
+    <div id="weeklySection" class="weekly">
+        <h2>Weekly Summary (fill on Sunday)</h2>
+        <p><strong>Total tasks completed (week):</strong> <span id="weeklyTasks">0</span> / 56</p>
+        <p><strong>Habit consistency score (avg):</strong> <span id="habitScore">0</span> / 5</p>
+        <h3>Time invested this week:</h3>
+        <ul>
+            <li><strong>Trading development:</strong> <span id="weeklyTrading">0</span> hours</li>
+            <li><strong>Mindset growth:</strong> <span id="weeklyMindset">0</span> hours</li>
+            <li><strong>Reading / learning:</strong> <span id="weeklyReading">0</span> hours</li>
+        </ul>
+        <p><strong>Biggest win this week:</strong> <textarea id="biggestWin" rows="2" placeholder="e.g., Consistent reading habit"></textarea></p>
+        <p><strong>Main thing to improve next week:</strong> <textarea id="improve" rows="2" placeholder="e.g., Better time management"></textarea></p>
+        <button id="saveWeeklyButton">Save Weekly Summary & Start New Week</button>
+    </div>
+
+    <script>
+        const dateInput = document.getElementById('date');
+        const doneButton = document.getElementById('doneButton');
+        const nextDayButton = document.getElementById('nextDayButton');
+        const saveWeeklyButton = document.getElementById('saveWeeklyButton');
+        const dailySection = document.getElementById('dailySection');
+        const weeklySection = document.getElementById('weeklySection');
+        const tasksInput = document.getElementById('tasksCompleted');
+        const percentSpan = document.getElementById('completionPercent');
+
+        // Set default date to today
+        const today = new Date().toISOString().split('T')[0];
+        dateInput.value = today;
+        loadData(today);
+
+        // Load when date changes
+        dateInput.addEventListener('change', () => {
+            loadData(dateInput.value);
+        });
+
+        // Function to get week start (Monday) for a date string
+        function getWeekStart(dateStr) {
+            const d = new Date(dateStr);
+            const day = d.getDay(); // 0 sun .. 6 sat
+            // compute Monday of that week
+            const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+            const monday = new Date(d.setDate(diff));
+            return monday.toISOString().split('T')[0];
+        }
+
+        // Load data for the current date and week
+        function loadData(date) {
+            if (!date) return;
+            const data = JSON.parse(localStorage.getItem(date)) || {};
+            document.getElementById('top1').value = data.top1 || 'Trading development, backtesting';
+            document.getElementById('top2').value = data.top2 || 'Watch growth mindset videos and podcast';
+            document.getElementById('top3').value = data.top3 || 'Read 10 pages of books daily';
+            document.getElementById('morning').value = data.morning || '';
+            document.getElementById('afternoon').value = data.afternoon || '';
+            document.getElementById('evening').value = data.evening || '';
+            document.getElementById('tradingTime').value = data.tradingTime || '';
+            document.getElementById('mindsetTime').value = data.mindsetTime || '';
+            document.getElementById('readingTime').value = data.readingTime || '';
+            document.getElementById('tasksCompleted').value = data.tasksCompleted || '';
+            document.getElementById('win1').value = data.win1 || '';
+            document.getElementById('win2').value = data.win2 || '';
+            document.getElementById('blocker1').value = data.blocker1 || '';
+            document.getElementById('blocker2').value = data.blocker2 || '';
+            document.getElementById('focus1').value = data.focus1 || '';
+            document.getElementById('focus2').value = data.focus2 || '';
+            document.getElementById('focus3').value = data.focus3 || '';
+            updatePercent();
+
+            // Load habits for the week
+            const weekStart = getWeekStart(date);
+            const habitsData = JSON.parse(localStorage.getItem('habits_' + weekStart)) || {};
+            const habits = ['gym', 'protein', 'sugar', 'reading'];
+            const days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+            habits.forEach(habit => {
+                days.forEach(day => {
+                    const id = habit + day;
+                    const el = document.getElementById(id);
+                    if (el) el.checked = !!habitsData[id];
+                });
+            });
+
+            // If it's Sunday, show weekly summary when loading
+            const dateObj = new Date(date);
+            if (dateObj.getDay() === 0) {
+                dailySection.style.display = 'none';
+                weeklySection.style.display = 'block';
+                populateWeeklySummary(date);
+            } else {
+                dailySection.style.display = 'block';
+                weeklySection.style.display = 'none';
+            }
+        }
+
+        // Save data for the current date and week
+        function saveData(date) {
+            if (!date) return;
+            const data = {
+                top1: document.getElementById('top1').value,
+                top2: document.getElementById('top2').value,
+                top3: document.getElementById('top3').value,
+                morning: document.getElementById('morning').value,
+                afternoon: document.getElementById('afternoon').value,
+                evening: document.getElementById('evening').value,
+                tradingTime: parseFloat(document.getElementById('tradingTime').value) || 0,
+                mindsetTime: parseFloat(document.getElementById('mindsetTime').value) || 0,
+                readingTime: parseFloat(document.getElementById('readingTime').value) || 0,
+                tasksCompleted: parseInt(document.getElementById('tasksCompleted').value) || 0,
+                win1: document.getElementById('win1').value,
+                win2: document.getElementById('win2').value,
+                blocker1: document.getElementById('blocker1').value,
+                blocker2: document.getElementById('blocker2').value,
+                focus1: document.getElementById('focus1').value,
+                focus2: document.getElementById('focus2').value,
+                focus3: document.getElementById('focus3').value
+            };
+            localStorage.setItem(date, JSON.stringify(data));
+
+            // Save habits for the week
+            const weekStart = getWeekStart(date);
+            const habitsData = {};
+            const habits = ['gym','protein','sugar','reading'];
+            const days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+            habits.forEach(habit => {
+                days.forEach(day => {
+                    const id = habit + day;
+                    const el = document.getElementById(id);
+                    habitsData[id] = !!(el && el.checked);
+                });
+            });
+            localStorage.setItem('habits_' + weekStart, JSON.stringify(habitsData));
+        }
+
+        // Update completion percentage
+        function updatePercent() {
+            const completed = parseInt(tasksInput.value) || 0;
+            const percent = Math.round((completed / 8) * 100);
+            percentSpan.textContent = percent + '%';
+        }
+
+        tasksInput.addEventListener('input', updatePercent);
+
+        // Done button: save and move to next day or weekly
+        doneButton.addEventListener('click', () => {
+            const currentDate = dateInput.value;
+            saveData(currentDate);
+            const dateObj = new Date(currentDate);
+            const dayOfWeek = dateObj.getDay(); // 0=Sun, 1=Mon, etc.
+            if (dayOfWeek === 0) { // Sunday -> show weekly summary
+                dailySection.style.display = 'none';
+                weeklySection.style.display = 'block';
+                populateWeeklySummary(currentDate);
+            } else {
+                // Move to next day
+                dateObj.setDate(dateObj.getDate() + 1);
+                const nextDate = dateObj.toISOString().split('T')[0];
+                dateInput.value = nextDate;
+                loadData(nextDate);
+            }
+        });
+
+        // Next Day button: move to next day without saving
+        nextDayButton.addEventListener('click', () => {
+            const currentDate = dateInput.value;
+            const dateObj = new Date(currentDate);
+            dateObj.setDate(dateObj.getDate() + 1);
+            const nextDate = dateObj.toISOString().split('T')[0];
+            dateInput.value = nextDate;
+            loadData(nextDate);
+        });
+
+        // Populate weekly summary (sums a week's saved data, starting from Monday)
+        function populateWeeklySummary(date) {
+            const weekStart = getWeekStart(date);
+            let totalTasks = 0;
+            let totalTrading = 0;
+            let totalMindset = 0;
+            let totalReading = 0;
+            let habitChecks = 0;
+            const totalHabitBoxes = 4 * 7; // 4 habits * 7 days
+
+            for (let i = 0; i < 7; i++) {
+                const dayDate = new Date(weekStart);
+                dayDate.setDate(dayDate.getDate() + i);
+                const dayKey = dayDate.toISOString().split('T')[0];
+                const dayData = JSON.parse(localStorage.getItem(dayKey)) || {};
+                totalTasks += parseInt(dayData.tasksCompleted) || 0;
+                totalTrading += parseFloat(dayData.tradingTime) || 0;
+                totalMindset += parseFloat(dayData.mindsetTime) || 0;
+                totalReading += parseFloat(dayData.readingTime) || 0;
+
+                // habits for this week
+                const habitsData = JSON.parse(localStorage.getItem('habits_' + weekStart)) || {};
+                // count all checked boxes in stored habits object
+                for (const key in habitsData) {
+                    if (habitsData[key]) habitChecks++;
+                }
+                // break after counting once (we count all keys each iteration) so adjust: we want total checks across week, not multiply
+            }
+
+            // The loop above double-counts habits because it iterates 7 times — fix by counting habits once below:
+            const habitsDataOnce = JSON.parse(localStorage.getItem('habits_' + weekStart)) || {};
+            let checksOnce = 0;
+            for (const k in habitsDataOnce) if (habitsDataOnce[k]) checksOnce++;
+            habitChecks = checksOnce; // actual number of checked boxes across the 4x7 grid
+
+            // habit consistency score scaled to 0-5
+            const habitScore = totalHabitBoxes ? Math.round((habitChecks / totalHabitBoxes) * 5 * 10) / 10 : 0;
+
+            document.getElementById('weeklyTasks').textContent = totalTasks;
+            document.getElementById('weeklyTrading').textContent = Math.round(totalTrading * 10) / 10;
+            document.getElementById('weeklyMindset').textContent = Math.round(totalMindset * 10) / 10;
+            document.getElementById('weeklyReading').textContent = Math.round(totalReading * 10) / 10;
+            document.getElementById('habitScore').textContent = habitScore;
+        }
+
+        // Save weekly summary and start new week (advance to next Monday)
+        saveWeeklyButton.addEventListener('click', () => {
+            // save weekly notes
+            const weekStart = getWeekStart(dateInput.value);
+            const weeklySummary = {
+                biggestWin: document.getElementById('biggestWin').value || '',
+                improve: document.getElementById('improve').value || '',
+                weekStart: weekStart,
+                savedAt: new Date().toISOString()
+            };
+            // store weekly summary under a key
+            const weeklyKey = 'weekly_' + weekStart;
+            localStorage.setItem(weeklyKey, JSON.stringify(weeklySummary));
+
+            // reset UI: go to next Monday
+            const monday = new Date(weekStart);
+            monday.setDate(monday.getDate() + 7); // next week's Monday
+            const nextMonday = monday.toISOString().split('T')[0];
+            dateInput.value = nextMonday;
+            dailySection.style.display = 'block';
+            weeklySection.style.display = 'none';
+            loadData(nextMonday);
+
+            // clear weekly notes fields
+            document.getElementById('biggestWin').value = '';
+            document.getElementById('improve').value = '';
+        });
+
+        // Quick sanity: log JS errors to console (helps debugging)
+        window.addEventListener('error', function(e) {
+            console.error('JS Error:', e.message, 'at', e.filename + ':' + e.lineno);
+        });
+    </script>
+</body>
+</html>
