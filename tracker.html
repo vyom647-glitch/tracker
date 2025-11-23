@@ -209,6 +209,10 @@
 
         <button id="doneButton">Done (Save & Next Day)</button>
         <button id="nextDayButton">Next Day (Without Saving)</button>
+        <button id="exportBtn" type="button">Export All Data (JSON)</button>
+<input type="file" id="importFile" accept="application/json" style="display:none">
+<button id="importBtn" type="button">Import Data (JSON)</button>
+
     </div>
 
     <div id="weeklySection" class="weekly">
@@ -459,5 +463,48 @@
             console.error('JS Error:', e.message, 'at', e.filename + ':' + e.lineno);
         });
     </script>
+    // Export all localStorage keys/values to a JSON file
+document.getElementById('exportBtn').addEventListener('click', () => {
+  const data = {};
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    data[key] = localStorage.getItem(key);
+  }
+  const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'tracker_backup_' + new Date().toISOString().slice(0,10) + '.json';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+});
+
+// Import JSON and write to localStorage (merges / overwrites existing keys)
+document.getElementById('importBtn').addEventListener('click', () => {
+  document.getElementById('importFile').click();
+});
+document.getElementById('importFile').addEventListener('change', function() {
+  const file = this.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const obj = JSON.parse(e.target.result);
+      if (!confirm('Importing will overwrite matching keys in localStorage. Continue?')) return;
+      for (const k in obj) {
+        localStorage.setItem(k, obj[k]);
+      }
+      alert('Import complete. Reloading page.');
+      location.reload();
+    } catch (err) {
+      alert('Invalid JSON file.');
+    }
+  };
+  reader.readAsText(file);
+});
+
 </body>
 </html>
+
